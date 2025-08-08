@@ -13,7 +13,7 @@ class EnhancedDeepSeekGA:
                  objective_func: Callable[[List[float]], float],
                  dim: int = 10,
                  population_size: int = 50,
-                 generations: int=20,
+                 generations: int = 20,
                  mutation_rate: float = 0.1,
                  crossover_rate: float = 0.9,
                  use_deepseek: bool = True,
@@ -55,7 +55,8 @@ class EnhancedDeepSeekGA:
 
         ### 目标函数表达式
        f(yt,zt,yr,zr) = |0.634*exp(j*1256.6*(0.1545+0.4755*yt+0.8660*zt+0.3536*yr+0.7071*zr)) 
-       + 0.1768*exp(j*1256.6*(0.6371+0.3068*yt+0.7071*zt+0.3510*yr+0.5878*zr))|
+       + 0.1768*exp(j*1256.6*(0.6371+0.3068*yt+0.7071*zt+0.3510*yr+0.5878*zr))
+       +0.1768*exp(j*1256.6*(0.6123+0.6123*yt+0.5*zt+0.2939*yr+0.8660*zr))|
 
         ### 优化要求
         1. 优化变量(yt,zt,yr,zr)        
@@ -66,7 +67,7 @@ class EnhancedDeepSeekGA:
         请基于遗传算法原理，帮助生成：
         - 优质的交叉后代（保持多样性同时继承父代优点）
         - 有效的变异向量（跳出局部最优）
-              
+
         ## 输出要求
         1. 返回包含{self.dim}维向量的JSON对象     
         """
@@ -110,7 +111,7 @@ class EnhancedDeepSeekGA:
                 "content": (
                     "你是一个严格的数值优化助手。必须：\n"
                     "1. 只返回有效的JSON数组\n"
-                    "2. 每个数值保留4位小数\n"                    
+                    "2. 每个数值保留4位小数\n"
                     "3. 禁止任何解释性文本\n"
                 )
             },
@@ -165,7 +166,6 @@ class EnhancedDeepSeekGA:
                 if len(vectors) >= expected_items:
                     return vectors[:expected_items]
 
-
             # 正常数组处理流程
             if isinstance(parsed, list):
                 valid_vectors = [vec for vec in parsed if isinstance(vec, list) and len(vec) == self.dim]
@@ -198,7 +198,8 @@ class EnhancedDeepSeekGA:
         if generation > 30:
             self.mutation_rate *= 0.95  # 后期减少变异
 
-    def deepseek_guided_crossover(self, parent1: np.ndarray, parent2: np.ndarray,current_gen_info,history_info) -> Tuple[np.ndarray, np.ndarray]:
+    def deepseek_guided_crossover(self, parent1: np.ndarray, parent2: np.ndarray, current_gen_info, history_info) -> \
+    Tuple[np.ndarray, np.ndarray]:
         """增强版智能交叉（含完整任务说明）"""
         if (not self.use_deepseek or
                 random.random() > 0.7 or
@@ -257,7 +258,7 @@ class EnhancedDeepSeekGA:
 
         return np.clip(child1, self.range_min, self.range_max), np.clip(child2, self.range_min, self.range_max)
 
-    def deepseek_guided_mutation(self, individual: np.ndarray,current_gen_info,history_info) -> np.ndarray:
+    def deepseek_guided_mutation(self, individual: np.ndarray, current_gen_info, history_info) -> np.ndarray:
         """增强版智能变异（含完整任务说明）"""
         if (not self.use_deepseek or
                 random.random() > 0.7 or
@@ -283,7 +284,7 @@ class EnhancedDeepSeekGA:
             - 保持其他维度微调
             - 有助于跳出局部最优
             - 可以参考上一代种群数据：{current_gen_info}，历史种群数据：{history_info}
-            
+
             ## 示例正确响应：
             [-0.6345,-0.3456,0.4234,0.8234]
             """
@@ -378,13 +379,13 @@ class EnhancedDeepSeekGA:
 
                 # 交叉
                 if random.random() < self.crossover_rate:
-                    child1, child2 = self.deepseek_guided_crossover(parent1, parent2,current_gen_info,history_info)
+                    child1, child2 = self.deepseek_guided_crossover(parent1, parent2, current_gen_info, history_info)
                 else:
                     child1, child2 = parent1.copy(), parent2.copy()
 
                 # 变异
-                child1 = self.deepseek_guided_mutation(child1,current_gen_info,history_info)
-                child2 = self.deepseek_guided_mutation(child2,current_gen_info,history_info)
+                child1 = self.deepseek_guided_mutation(child1, current_gen_info, history_info)
+                child2 = self.deepseek_guided_mutation(child2, current_gen_info, history_info)
 
                 next_population.extend([child1, child2])
 
@@ -409,13 +410,15 @@ if __name__ == "__main__":
 
         phi1 = 1256.6 * (0.4755 * yt + 0.8660 * zt + 0.3536 * yr + 0.7071 * zr)
         phi2 = 1256.6 * (0.6371 + 0.3068 * yt + 0.7071 * zt + 0.3510 * yr + 0.5878 * zr)
+        phi3 = 1256.6 * (0.6123 + 0.6123 * yt + 0.5 * zt + 0.2939 * yr + 0.8660 * zr)
 
         # 计算复数项
         term1 = 0.634 * np.exp(1j * phi1)
         term2 = 0.1768 * np.exp(1j * phi2)
+        term3 = 0.1768 * np.exp(1j * phi3)
 
+        return np.abs(term1 + term2 + term3)
 
-        return np.abs(term1 + term2 )
 
     # 转换为最大化问题
     def objective_func(x):
@@ -426,13 +429,13 @@ if __name__ == "__main__":
     ga = EnhancedDeepSeekGA(
         objective_func=objective_func,
         dim=4,
-        population_size=10,
+        population_size=30,
         generations=20,
         mutation_rate=0.15,
         crossover_rate=0.85,
-        use_deepseek=True,
+        use_deepseek=False,
         deepseek_temperature=0.3,
-        deepseek_api_key="your api"
+        deepseek_api_key="sk-e36d8aaa19444181899a399899deab59"
     )
 
     # 运行进化
