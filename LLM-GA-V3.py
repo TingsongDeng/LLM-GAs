@@ -430,9 +430,9 @@ if __name__ == "__main__":
         generations=20,
         mutation_rate=0.15,
         crossover_rate=0.85,
-        use_deepseek=False,
+        use_deepseek=True,
         deepseek_temperature=0.3,
-        deepseek_api_key="sk-e36d8aaa19444181899a399899deab59"
+        deepseek_api_key="your api"
     )
 
     # 运行进化
