@@ -1,6 +1,7 @@
 LLM-Enhanced Genetic Algorithm Optimization Framework
 This repository contains two implementations of a Genetic Algorithm (GA) enhanced with Large Language Model (LLM) guidance from DeepSeek, designed for solving complex optimization problems.
 
+
 Implementations
 1. LLM-GA-Rastrigin
 Optimizes the Rastrigin function, a classic benchmark for optimization algorithms:
@@ -19,6 +20,7 @@ Premature convergence detection
 
 API failure handling
 
+
 2. LLM-GA-FAS
 Optimizes a function from Fluid Antenna System (FAS) applications:
 
@@ -34,6 +36,7 @@ Detailed generation logging
 
 Early convergence handling
 
+
 Key Features
 Hybrid Intelligence: Combines traditional GA with LLM guidance
 
@@ -44,6 +47,7 @@ Robust API Handling: Comprehensive error handling for LLM API calls
 Diversity Maintenance: Mechanisms to prevent premature convergence
 
 Detailed Logging: Tracks population diversity and fitness history
+
 
 Usage
 For each implementation:
@@ -58,6 +62,7 @@ ga = EnhancedDeepSeekGA(
     ...,
     deepseek_api_key="your_api_key_here"
 )
+
 
 Configuration Options
 Common parameters for both implementations:
