@@ -1,7 +1,6 @@
 LLM-Enhanced Genetic Algorithm Optimization Framework
 This repository contains two implementations of a Genetic Algorithm (GA) enhanced with Large Language Model (LLM) guidance from DeepSeek, designed for solving complex optimization problems.
-
-
+<br><br>
 Implementations
 1. LLM-GA-Rastrigin
 Optimizes the Rastrigin function, a classic benchmark for optimization algorithms:
