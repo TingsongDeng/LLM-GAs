@@ -62,6 +62,9 @@ ga = EnhancedDeepSeekGA(
     deepseek_api_key="your_api_key_here"
 )
 
+-To compare with traditional GA (without LLM guidance), simply set:
+
+use_deepseek=False
 
 Configuration Options
 Common parameters for both implementations:
