@@ -20,17 +20,15 @@ Premature convergence detection
 API failure handling
 
 2. LLM-GA-FAS
-Optimizes a complex function from Frequency-Agile SAR (FAS) applications:
+Optimizes a function from Fluid Antenna System (FAS) applications:
 
-Objective: Maximize a complex trigonometric function
+Objective: Maximize the function |h(u,v)| in FAS
 
 Dimensions: Fixed at 4 (yt, zt, yr, zr)
 
 Features:
 
 Enhanced with historical population data in LLM prompts
-
-Specialized for [-1, 1] range optimization
 
 Detailed generation logging
 
@@ -52,19 +50,15 @@ For each implementation:
 
 Install dependencies:
 
-bash
 pip install numpy openai
+
 Set your DeepSeek API key:
 
-python
 ga = EnhancedDeepSeekGA(
     ...,
     deepseek_api_key="your_api_key_here"
 )
-Run the optimization:
 
-python
-best_solution, best_fitness = ga.evolve(generations=50)
 Configuration Options
 Common parameters for both implementations:
 
