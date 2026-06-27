@@ -132,11 +132,11 @@ The LLM then returns new candidate vectors, which are clipped to the valid range
 
 -   API calls introduce latency and rely on network stability; the framework includes retry and exponential backoff.
     
--   LLM-generated vectors are **always clipped** to the valid range and rounded to 4 decimal places.
+-   LLM-generated vectors are always clipped to the valid range and rounded to 4 decimal places.
     
--   If API failures exceed `max_api_failures`, the system **automatically disables LLM guidance** and continues with traditional operators.
+-   If API failures exceed `max_api_failures`, the system automatically disables LLM guidance and continues with traditional operators.
     
--   This is a **research prototype** – for production use, add more extensive error handling and validation.
+-   This is a research prototype – for production use, add more extensive error handling and validation.
 
 ## Contributing
 
